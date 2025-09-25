@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DHI 2025 Winter Break Vocabulary Test</title>
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+      /* 기본 스타일 */
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Inter', 'Noto Sans KR', sans-serif;
+      }
+      .korean-text {
+          font-family: 'Noto Sans KR', sans-serif;
+      }
+      body {
+          background: #f3f4f6;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+      }
+      .container {
+          max-width: 800px;
+          width: 100%;
+          background: white;
+          border-radius: 16px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          padding: 2rem;
+          margin: 20px auto;
+      }
+      .header {
+          text-align: center;
+          margin-bottom: 2rem;
+          padding-bottom: 1rem;
+          border-bottom: 2px solid #f3f4f6;
+      }
+      .title {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #1f2937;
+          margin-bottom: 0.5rem;
+      }
+      .subtitle {
+          font-size: 1.25rem;
+          color: #4b5563;
+          margin-bottom: 1rem;
+      }
+      .progress-container {
+          margin-bottom: 2rem;
+      }
+      .progress-bar {
+          width: 100%;
+          height: 8px;
+          background: #e5e7eb;
+          border-radius: 4px;
+          overflow: hidden;
+      }
+      .progress-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #3b82f6, #2563eb);
+          transition: width 0.3s ease;
+      }
+      .word-container {
+          background: #f8fafc;
+          padding: 1.5rem;
+          border-radius: 12px;
+          margin-bottom: 1.5rem;
+          text-align: center;
+      }
+      .options-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1rem;
+          margin-bottom: 1.5rem;
+      }
+      .option-button {
+          padding: 1rem;
+          font-size: 1.125rem;
+          border: 2px solid #e5e7eb;
+          border-radius: 8px;
+          background: white;
+          color: #1f2937;
+          cursor: pointer;
+          transition: all 0.2s ease;
+      }
+      .option-button:hover {
+          background: #f3f4f6;
+          border-color: #d1d5db;
+      }
+      .feedback {
+          padding: 1rem;
+          border-radius: 8px;
+          margin-bottom: 1.5rem;
+          text-align: center;
+      }
+      .feedback.correct {
+          background: #dcfce7;
+          color: #166534;
+      }
+      .feedback.incorrect {
+          background: #fee2e2;
+          color: #991b1b;
+      }
+      .certificate {
+          text-align: center;
+          padding: 2rem;
+      }
+      .stats-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1rem;
+          margin: 2rem 0;
+      }
+      .stat-card {
+          background: #f8fafc;
+          padding: 1rem;
+          border-radius: 8px;
+          text-align: center;
+      }
+      form {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          margin-top: 1rem;
+      }
+      input {
+          padding: 0.75rem;
+          border: 2px solid #e5e7eb;
+          border-radius: 8px;
+          font-size: 1rem;
+      }
+      button {
+          padding: 0.75rem;
+          background: #3b82f6;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: background 0.2s ease;
+      }
+      button:hover {
+          background: #2563eb;
+      }
+      .streak-container {
+          text-align: center;
+          padding: 1rem;
+          margin-bottom: 1rem;
+      }
+      .streak-flames {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 5px;
+          margin-bottom: 0.5rem;
+      }
+      .streak-number {
+          font-size: 2rem;
+          font-weight: bold;
+          color: #ff4d4d;
+          text-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+          animation: pulse 1s infinite;
+      }
+      .streak-label {
+          font-size: 1rem;
+          color: #666;
+          margin-top: 0.5rem;
+      }
+      .streak-milestone {
+          color: #ff4d4d;
+          font-size: 1.2rem;
+          font-weight: bold;
+          margin-top: 0.5rem;
+          animation: popIn 0.5s ease-out;
+      }
+      .retry-button {
+          margin-top: 2rem;
+          padding: 1rem 2rem;
+          background: #3b82f6;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          font-size: 1.1rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          animation: pulse 2s infinite;
+      }
+      .retry-button:hover {
+          background: #2563eb;
+          transform: scale(1.05);
+      }
+      @keyframes pulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.1); }
+          100% { transform: scale(1); }
+      }
+      @keyframes popIn {
+          0% { transform: scale(0); }
+          80% { transform: scale(1.2); }
+          100% { transform: scale(1); }
+      }
+      @media (max-width: 640px) {
+          .options-grid {
+              grid-template-columns: repeat(2, 1fr);
+          }
+          .stats-grid {
+              grid-template-columns: 1fr;
+          }
+      }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    // 배열 섞기 유틸리티 함수
+    const shuffleArray = (array) => {
+      const newArray = [...array];
+      for (let i = newArray.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+      }
+      return newArray;
+    };
+
+    // 스트릭(연속 정답) 표시 컴포넌트
+    const StreakDisplay = ({ streak }) => {
+      const getStreakMessage = (streak) => {
+          if (streak >= 20) return "UNSTOPPABLE! 🏆";
+          if (streak >= 15) return "LEGENDARY! ⭐";
+          if (streak >= 10) return "AWESOME! 🌟";
+          if (streak >= 5) return "GREAT! 🎯";
+          if (streak >= 3) return "NICE! 👍";
+          return "";
+      };
+
+      return streak > 0 ? (
+          <div className="streak-container">
+              <div className="streak-flames">
+                  {Array(Math.min(Math.floor(streak / 5), 5)).fill('🔥').map((flame, index) => (
+                      <span 
+                          key={index} 
+                          style={{ 
+                              fontSize: `${Math.min(30 + streak * 2, 60)}px`,
+                              transform: `scale(${1 + Math.min(streak * 0.02, 0.5)})`,
+                              display: 'inline-block'
+                          }}
+                      >
+                          {flame}
+                      </span>
+                  ))}
+              </div>
+              <div className="streak-number">{streak}</div>
+              <div className="streak-label">Current Streak</div>
+              {streak >= 3 && (
+                  <div className="streak-milestone">
+                      {getStreakMessage(streak)}
+                  </div>
+              )}
+          </div>
+      ) : null;
+    };
+
+   // Initialize the full vocabulary list
+const fullVocabList = [
+{ korean: '항생제', english: 'antibiotic', attempts: 0, wrongAttempts: 0 },
+{ korean: '쓰레기 매립(지)', english: 'landfill', attempts: 0, wrongAttempts: 0 },
+{ korean: '주먹', english: 'fist', attempts: 0, wrongAttempts: 0 },
+{ korean: '이데올로기[이념], 관념', english: 'ideology', attempts: 0, wrongAttempts: 0 },
+{ korean: '레크리에이션[오락]', english: 'recreation', attempts: 0, wrongAttempts: 0 },
+{ korean: '계급[계층], 체계[위계], 지배층', english: 'hierarchy', attempts: 0, wrongAttempts: 0 },
+{ korean: '홍보용 소책자', english: 'brochure', attempts: 0, wrongAttempts: 0 },
+{ korean: '매장', english: 'burial', attempts: 0, wrongAttempts: 0 },
+{ korean: '발화, 연소', english: 'combustion', attempts: 0, wrongAttempts: 0 },
+{ korean: '공동 작업', english: 'collaboration', attempts: 0, wrongAttempts: 0 },
+{ korean: '(특유의) 요리(법)', english: 'cuisine', attempts: 0, wrongAttempts: 0 },
+{ korean: '충돌, 충돌하다', english: 'clash', attempts: 0, wrongAttempts: 0 },
+{ korean: '(물)거품[포말], 거품이 일다', english: 'foam', attempts: 0, wrongAttempts: 0 },
+{ korean: '눈을 깜박이다, (빛이) 깜박이다, 깜박임', english: 'blink', attempts: 0, wrongAttempts: 0 },
+{ korean: '(약자를) 못살게 굴다[위협하다], (약자를) 못살게 구는 자', english: 'bully', attempts: 0, wrongAttempts: 0 },
+{ korean: '얼굴이 붉어지다, 물로 씻어 내리다, 홍조, 씻어 내림', english: 'flush', attempts: 0, wrongAttempts: 0 },
+{ korean: '도박하다, 도박', english: 'gamble', attempts: 0, wrongAttempts: 0 },
+{ korean: '가속화하다', english: 'accelerate', attempts: 0, wrongAttempts: 0 },
+{ korean: '결합[융합]하다', english: 'fuse', attempts: 0, wrongAttempts: 0 },
+{ korean: '열망[염원]하다', english: 'aspire', attempts: 0, wrongAttempts: 0 },
+{ korean: '통합[통일]하다', english: 'unify', attempts: 0, wrongAttempts: 0 },
+{ korean: '단언[주장]하다', english: 'assert', attempts: 0, wrongAttempts: 0 },
+{ korean: '압축하다', english: 'compress', attempts: 0, wrongAttempts: 0 },
+{ korean: '썩은[부패한]', english: 'rotten', attempts: 0, wrongAttempts: 0 },
+{ korean: '근심 걱정 없는[태평스러운]', english: 'carefree', attempts: 0, wrongAttempts: 0 },
+{ korean: '만성[고질]의', english: 'chronic', attempts: 0, wrongAttempts: 0 },
+{ korean: '서투른[어색한]', english: 'clumsy', attempts: 0, wrongAttempts: 0 },
+{ korean: '아주 새로운[신품의]', english: 'brand-new', attempts: 0, wrongAttempts: 0 },
+{ korean: '자격이 있는', english: 'eligible', attempts: 0, wrongAttempts: 0 },
+{ korean: '배타[독점]적인', english: 'exclusive', attempts: 0, wrongAttempts: 0 },
+{ korean: '광고 문안 작성자', english: 'copywriter', attempts: 0, wrongAttempts: 0 },
+{ korean: '목발', english: 'crutch', attempts: 0, wrongAttempts: 0 },
+{ korean: '자세[태도]', english: 'posture', attempts: 0, wrongAttempts: 0 },
+{ korean: '부족[결핍], 결함', english: 'deficiency', attempts: 0, wrongAttempts: 0 },
+{ korean: '기저귀', english: 'diaper', attempts: 0, wrongAttempts: 0 },
+{ korean: '진퇴양난[딜레마]', english: 'dilemma', attempts: 0, wrongAttempts: 0 },
+{ korean: '광활한 공간', english: 'expanse', attempts: 0, wrongAttempts: 0 },
+{ korean: '대사', english: 'ambassador', attempts: 0, wrongAttempts: 0 },
+{ korean: '지느러미', english: 'fin', attempts: 0, wrongAttempts: 0 },
+{ korean: '(복수 utilities) (전기·수도·가스 등) 공공 서비스, 유용성, (컴퓨터) 유틸리티', english: 'utility', attempts: 0, wrongAttempts: 0 },
+{ korean: '장수, 수명', english: 'longevity', attempts: 0, wrongAttempts: 0 },
+{ korean: '퍼덕거리다[펄럭이다]', english: 'flutter', attempts: 0, wrongAttempts: 0 },
+{ korean: '포함하다[아우르다], 에워[둘러]싸다', english: 'encompass', attempts: 0, wrongAttempts: 0 },
+{ korean: '완전히 파괴[황폐화]하다', english: 'devastate', attempts: 0, wrongAttempts: 0 },
+{ korean: '밝히다[드러내다]', english: 'disclose', attempts: 0, wrongAttempts: 0 },
+{ korean: '무시하다', english: 'disregard', attempts: 0, wrongAttempts: 0 },
+{ korean: '방해하다[지장을 주다]', english: 'disrupt', attempts: 0, wrongAttempts: 0 },
+{ korean: '교활한, 교활함', english: 'cunning', attempts: 0, wrongAttempts: 0 },
+{ korean: '보수적인, 보수주의자', english: 'conservative', attempts: 0, wrongAttempts: 0 },
+{ korean: '동등한, 상당하는 것[등가물]', english: 'equivalent', attempts: 0, wrongAttempts: 0 },
+{ korean: '최대[최고]의, 최대[최고]', english: 'maximum', attempts: 0, wrongAttempts: 0 },
+{ korean: '정적인[정체된], 잡음, 정전기', english: 'static', attempts: 0, wrongAttempts: 0 },
+{ korean: '잠재의식의, 잠재의식', english: 'subconscious', attempts: 0, wrongAttempts: 0 },
+{ korean: '수용적인', english: 'receptive', attempts: 0, wrongAttempts: 0 },
+{ korean: '지나친[과도한]', english: 'excessive', attempts: 0, wrongAttempts: 0 },
+{ korean: '총계의, 명백히 잘못된', english: 'gross', attempts: 0, wrongAttempts: 0 },
+{ korean: '참을 수 없는', english: 'intolerable', attempts: 0, wrongAttempts: 0 },
+{ korean: '사실의', english: 'factual', attempts: 0, wrongAttempts: 0 },
+{ korean: '악명 높은', english: 'notorious', attempts: 0, wrongAttempts: 0 },
+{ korean: '일반적인[널리 퍼져 있는]', english: 'prevalent', attempts: 0, wrongAttempts: 0 },
+{ korean: '수화물', english: 'baggage', attempts: 0, wrongAttempts: 0 },
+{ korean: '형성(물)', english: 'formation', attempts: 0, wrongAttempts: 0 },
+{ korean: '덩어리, 혹', english: 'lump', attempts: 0, wrongAttempts: 0 },
+{ korean: '대야[대접], 분지, 유역', english: 'basin', attempts: 0, wrongAttempts: 0 },
+{ korean: '무술', english: 'martial art', attempts: 0, wrongAttempts: 0 },
+{ korean: '확실성, 확실한 것', english: 'certainty', attempts: 0, wrongAttempts: 0 },
+{ korean: '멘토[조언자, 조력자]', english: 'mentor', attempts: 0, wrongAttempts: 0 },
+{ korean: '전사[용사]', english: 'warrior', attempts: 0, wrongAttempts: 0 },
+{ korean: '완전한 행복[기쁨]', english: 'bliss', attempts: 0, wrongAttempts: 0 },
+{ korean: '제약, 제한[통제]', english: 'constraint', attempts: 0, wrongAttempts: 0 },
+{ korean: '어리석은 실수', english: 'blunder', attempts: 0, wrongAttempts: 0 },
+{ korean: '복권, 추첨', english: 'lottery', attempts: 0, wrongAttempts: 0 },
+{ korean: '고아, 고아로 만들다', english: 'orphan', attempts: 0, wrongAttempts: 0 },
+{ korean: '꽉 잡음, 지배, 이해, 꽉 잡다', english: 'grip', attempts: 0, wrongAttempts: 0 },
+{ korean: '틀, 곰팡이, 만들다[형성하다]', english: 'mold', attempts: 0, wrongAttempts: 0 },
+{ korean: '마구, 안전벨트, (자연력을) 이용하다', english: 'harness', attempts: 0, wrongAttempts: 0 },
+{ korean: '(거대한 모습으로) 불쑥 나타나다, 베틀[직기]', english: 'loom', attempts: 0, wrongAttempts: 0 },
+{ korean: '방출[배출]하다, 내보내다, 방출[배출], 내보냄', english: 'discharge', attempts: 0, wrongAttempts: 0 },
+{ korean: '겹치다[중복되다]', english: 'overlap', attempts: 0, wrongAttempts: 0 },
+{ korean: '추락[급락]하다, (~ in[into]) 뛰어들다', english: 'plunge', attempts: 0, wrongAttempts: 0 },
+{ korean: '(끼워) 넣다[삽입하다]', english: 'insert', attempts: 0, wrongAttempts: 0 },
+{ korean: '핥다[핥아 먹다]', english: 'lick', attempts: 0, wrongAttempts: 0 },
+{ korean: '', english: '', attempts: 0, wrongAttempts: 0 },
+{ korean: '오래 머무르다', english: 'linger', attempts: 0, wrongAttempts: 0 },
+{ korean: '원형의[둥근], 순회[순환]의', english: 'circular', attempts: 0, wrongAttempts: 0 },
+{ korean: '영광스러운, 멋진', english: 'glorious', attempts: 0, wrongAttempts: 0 },
+{ korean: '품위 있는, 우아한', english: 'gracious', attempts: 0, wrongAttempts: 0 },
+{ korean: '막대한[엄청난]', english: 'immense', attempts: 0, wrongAttempts: 0 },
+{ korean: '필수적인, 내장된, 완전한', english: 'integral', attempts: 0, wrongAttempts: 0 },
+{ korean: '멍청한, (화·놀라움으로) 말을 잃은, 벙어리의', english: 'dumb', attempts: 0, wrongAttempts: 0 },
+{ korean: '복잡한', english: 'intricate', attempts: 0, wrongAttempts: 0 },
+{ korean: '독백', english: 'monolog(ue)', attempts: 0, wrongAttempts: 0 },
+{ korean: '동기', english: 'motive', attempts: 0, wrongAttempts: 0 },
+{ korean: '(특수복) 옷[복장], 조직[회사]', english: 'outfit', attempts: 0, wrongAttempts: 0 },
+{ korean: '진통제', english: 'painkiller', attempts: 0, wrongAttempts: 0 },
+{ korean: '(발톱 있는 동물의) 발', english: 'paw', attempts: 0, wrongAttempts: 0 },
+{ korean: '인내(심)', english: 'perseverance', attempts: 0, wrongAttempts: 0 },
+{ korean: '살충제', english: 'pesticide', attempts: 0, wrongAttempts: 0 },
+{ korean: '몰락(의 원인)', english: 'downfall', attempts: 0, wrongAttempts: 0 },
+{ korean: '현관', english: 'porch', attempts: 0, wrongAttempts: 0 },
+{ korean: '열망[갈망]', english: 'longing', attempts: 0, wrongAttempts: 0 },
+{ korean: '비(율)', english: 'ratio', attempts: 0, wrongAttempts: 0 },
+{ korean: '창', english: 'spear', attempts: 0, wrongAttempts: 0 },
+{ korean: '확대하다', english: 'magnify', attempts: 0, wrongAttempts: 0 },
+{ korean: '울다[눈물을 흘리다]', english: 'weep', attempts: 0, wrongAttempts: 0 },
+{ korean: '중얼거리다', english: 'mumble', attempts: 0, wrongAttempts: 0 },
+{ korean: '필요로 하다', english: 'necessitate', attempts: 0, wrongAttempts: 0 },
+{ korean: '통합하다', english: 'integrate', attempts: 0, wrongAttempts: 0 },
+{ korean: '억압하다', english: 'oppress', attempts: 0, wrongAttempts: 0 },
+{ korean: '위조[변조, 조작]하다', english: 'falsify', attempts: 0, wrongAttempts: 0 },
+{ korean: '잘 알려지지 않은[무명의], 난해한[불명료한], 가리다', english: 'obscure', attempts: 0, wrongAttempts: 0 },
+{ korean: '지친[싫증난], 지치다[지치게 하다]', english: 'weary', attempts: 0, wrongAttempts: 0 },
+{ korean: '정교한, 더 자세히 설명하다', english: 'elaborate', attempts: 0, wrongAttempts: 0 },
+{ korean: '무지[무식]한', english: 'ignorant', attempts: 0, wrongAttempts: 0 },
+{ korean: '먼', english: 'faraway', attempts: 0, wrongAttempts: 0 },
+{ korean: '해당[적용]되는', english: 'applicable', attempts: 0, wrongAttempts: 0 },
+{ korean: '장엄한', english: 'majestic', attempts: 0, wrongAttempts: 0 },
+{ korean: '중세의', english: 'medi(a)eval', attempts: 0, wrongAttempts: 0 },
+{ korean: '자기의', english: 'magnetic', attempts: 0, wrongAttempts: 0 },
+{ korean: '연속적인[연이은]', english: 'successive', attempts: 0, wrongAttempts: 0 },
+{ korean: '임신한', english: 'pregnant', attempts: 0, wrongAttempts: 0 },
+{ korean: '부동산', english: 'real estate', attempts: 0, wrongAttempts: 0 },
+{ korean: '호흡', english: 'respiration', attempts: 0, wrongAttempts: 0 },
+{ korean: '결의[결심], 해결', english: 'resolution', attempts: 0, wrongAttempts: 0 },
+{ korean: '재회 모임[동창회], 재회[재결합]', english: 'reunion', attempts: 0, wrongAttempts: 0 },
+{ korean: '(공중) 위생 관리(시설)', english: 'sanitation', attempts: 0, wrongAttempts: 0 },
+{ korean: '자외선 차단제[차단 크림]', english: 'sunscreen', attempts: 0, wrongAttempts: 0 },
+{ korean: '감사', english: 'gratitude', attempts: 0, wrongAttempts: 0 },
+{ korean: '범위, 여지[기회]', english: 'scope', attempts: 0, wrongAttempts: 0 },
+{ korean: '성지', english: 'shrine', attempts: 0, wrongAttempts: 0 },
+{ korean: '(포장된) 보도[인도]', english: 'sidewalk', attempts: 0, wrongAttempts: 0 },
+{ korean: '구(체), 영역[분야]', english: 'sphere', attempts: 0, wrongAttempts: 0 },
+{ korean: '배우자', english: 'spouse', attempts: 0, wrongAttempts: 0 },
+{ korean: '대성당', english: 'cathedral', attempts: 0, wrongAttempts: 0 },
+{ korean: '(점점) 줄어들다', english: 'dwindle', attempts: 0, wrongAttempts: 0 },
+{ korean: '재발하다, 되풀이되다', english: 'recur', attempts: 0, wrongAttempts: 0 },
+{ korean: '정화[순화]하다', english: 'purify', attempts: 0, wrongAttempts: 0 },
+{ korean: '(결과가) 뒤따르다', english: 'ensue', attempts: 0, wrongAttempts: 0 },
+{ korean: '떨다', english: 'shiver', attempts: 0, wrongAttempts: 0 },
+{ korean: '규제[조절]하다', english: 'regulate', attempts: 0, wrongAttempts: 0 },
+{ korean: '증폭하다, 더 자세히 진술[서술]하다', english: 'amplify', attempts: 0, wrongAttempts: 0 },
+{ korean: '권한을 주다', english: 'empower', attempts: 0, wrongAttempts: 0 },
+{ korean: '음향의, 청각의, (악기가) 전자 장치를 쓰지 않는', english: 'acoustic(al)', attempts: 0, wrongAttempts: 0 },
+{ korean: '실용적인, 공리주의의', english: 'utilitarian', attempts: 0, wrongAttempts: 0 },
+{ korean: '미끄러운', english: 'slippery', attempts: 0, wrongAttempts: 0 },
+{ korean: '가만있지 못하는', english: 'restless', attempts: 0, wrongAttempts: 0 },
+{ korean: '신성한, 종교의', english: 'sacred', attempts: 0, wrongAttempts: 0 },
+{ korean: '그다음의', english: 'subsequent', attempts: 0, wrongAttempts: 0 },
+{ korean: '간단한, 솔직한', english: 'straightforward', attempts: 0, wrongAttempts: 0 },
+{ korean: '오르막의, 힘든, 언덕 위로', english: 'uphill', attempts: 0, wrongAttempts: 0 },
+{ korean: '똑바른, 똑바로', english: 'upright', attempts: 0, wrongAttempts: 0 },
+{ korean: '지옥', english: 'hell', attempts: 0, wrongAttempts: 0 },
+{ korean: '고정 관념', english: 'stereotype', attempts: 0, wrongAttempts: 0 },
+{ korean: '법률 (제정)', english: 'legislation', attempts: 0, wrongAttempts: 0 },
+{ korean: '증후군', english: 'syndrome', attempts: 0, wrongAttempts: 0 },
+{ korean: '직물', english: 'textile', attempts: 0, wrongAttempts: 0 },
+{ korean: '감촉[촉감, 식감]', english: 'texture', attempts: 0, wrongAttempts: 0 },
+{ korean: '폭죽, 불꽃놀이', english: 'firework', attempts: 0, wrongAttempts: 0 },
+{ korean: '이행[과도]', english: 'transition', attempts: 0, wrongAttempts: 0 },
+{ korean: '돌파(구)', english: 'breakthrough', attempts: 0, wrongAttempts: 0 },
+{ korean: '군대', english: 'troop', attempts: 0, wrongAttempts: 0 },
+{ korean: '영장류', english: 'primate', attempts: 0, wrongAttempts: 0 },
+{ korean: '반역자[반항아], 반항하다', english: 'rebel', attempts: 0, wrongAttempts: 0 },
+{ korean: '나선(형)(의), 나선형으로 움직이다', english: 'spiral', attempts: 0, wrongAttempts: 0 },
+{ korean: '통행료, 사상자 수, 천천히 (조)종을 울리다', english: 'toll', attempts: 0, wrongAttempts: 0 },
+{ korean: '급히 달려가다, 내동댕이치다, 돌진, 대시 기호(—)', english: 'dash', attempts: 0, wrongAttempts: 0 },
+{ korean: '조금씩 마시다, 한 모금', english: 'sip', attempts: 0, wrongAttempts: 0 },
+{ korean: '(단거리를) 전력 질주하다, 단거리 경주', english: 'sprint', attempts: 0, wrongAttempts: 0 },
+{ korean: '싹이 트다, 싹', english: 'sprout', attempts: 0, wrongAttempts: 0 },
+{ korean: '흔들리다[불안정해지다]', english: 'falter', attempts: 0, wrongAttempts: 0 },
+{ korean: '모의실험을 하다, ~인 체하다[모방하다]', english: 'simulate', attempts: 0, wrongAttempts: 0 },
+{ korean: '(차가) 미끄러지다', english: 'skid', attempts: 0, wrongAttempts: 0 },
+{ korean: '(표면에서) 걷어 내다, 훑어보다, (표면을) 스치듯 지나가다', english: 'skim', attempts: 0, wrongAttempts: 0 },
+{ korean: '(손으로) 엉덩이를 때리다', english: 'spank', attempts: 0, wrongAttempts: 0 },
+{ korean: '맹세[선서]하다, 욕하다', english: 'swear', attempts: 0, wrongAttempts: 0 },
+{ korean: '항복[투항]하다, 넘겨주다', english: 'surrender', attempts: 0, wrongAttempts: 0 },
+{ korean: '널리 퍼진[광범위한]', english: 'widespread', attempts: 0, wrongAttempts: 0 },
+{ korean: '성실한[진지한]', english: 'earnest', attempts: 0, wrongAttempts: 0 },
+{ korean: '자외선의', english: 'ultraviolet', attempts: 0, wrongAttempts: 0 },
+{ korean: '생산적인[유익한]', english: 'fruitful', attempts: 0, wrongAttempts: 0 },
+{ korean: '가치 있는[훌륭한], ~할[받을] 가치가 있는', english: 'worthy', attempts: 0, wrongAttempts: 0 },
+{ korean: '(음식을 담는) 갑[통]', english: 'carton', attempts: 0, wrongAttempts: 0 },
+{ korean: '동맹국, (the Allies) 연합국', english: 'ally', attempts: 0, wrongAttempts: 0 },
+{ korean: '(한 명의) 형제자매[동기]', english: 'sibling', attempts: 0, wrongAttempts: 0 },
+{ korean: '아마추어[비전문가](의)', english: 'amateur', attempts: 0, wrongAttempts: 0 },
+{ korean: '현수막[깃발]', english: 'banner', attempts: 0, wrongAttempts: 0 },
+{ korean: '인류학', english: 'anthropology', attempts: 0, wrongAttempts: 0 },
+{ korean: '익명(성)', english: 'anonymity', attempts: 0, wrongAttempts: 0 },
+{ korean: '(복수 -s[aquaria]) 수족관', english: 'aquarium', attempts: 0, wrongAttempts: 0 },
+{ korean: '꽃가루[화분]', english: 'pollen', attempts: 0, wrongAttempts: 0 },
+{ korean: '악(행)[악덕, 악습], (성·마약 관련) 범죄', english: 'vice', attempts: 0, wrongAttempts: 0 },
+{ korean: '마녀', english: 'witch', attempts: 0, wrongAttempts: 0 },
+{ korean: '물질대사[신진대사]', english: 'metabolism', attempts: 0, wrongAttempts: 0 },
+{ korean: '잔해[파편], 쓰레기', english: 'debris', attempts: 0, wrongAttempts: 0 },
+{ korean: '닻, 앵커[텔레비전 뉴스 진행자], 닻을 내리다', english: 'anchor', attempts: 0, wrongAttempts: 0 },
+{ korean: '물물 교환, 물물 교환하다', english: 'barter', attempts: 0, wrongAttempts: 0 },
+{ korean: '통치 기간, 통치[지배]하다', english: 'reign', attempts: 0, wrongAttempts: 0 },
+{ korean: '업그레이드하다[개선하다, 승급시키다], 업그레이드', english: 'upgrade', attempts: 0, wrongAttempts: 0 },
+{ korean: '휙 움직이다', english: 'swish', attempts: 0, wrongAttempts: 0 },
+{ korean: '(주먹으로) 세게 치다, 쿵쾅거리다', english: 'thump', attempts: 0, wrongAttempts: 0 },
+{ korean: '반짝이다', english: 'twinkle', attempts: 0, wrongAttempts: 0 },
+{ korean: '착수하다, 약속하다', english: 'undertake', attempts: 0, wrongAttempts: 0 },
+{ korean: '이용[활용]하다', english: 'utilize', attempts: 0, wrongAttempts: 0 },
+{ korean: '진동하다[진동시키다]', english: 'vibrate', attempts: 0, wrongAttempts: 0 },
+{ korean: '둘러보다[훑어보다], 인터넷을 검색하다', english: 'browse', attempts: 0, wrongAttempts: 0 },
+{ korean: '많이 있다[풍부하다]', english: 'abound', attempts: 0, wrongAttempts: 0 },
+{ korean: '정신이 멍한[잘 잊어버리는]', english: 'absent-minded', attempts: 0, wrongAttempts: 0 },
+{ korean: '항공의, 공중의', english: 'aerial', attempts: 0, wrongAttempts: 0 },
+{ korean: '공격적인', english: 'aggressive', attempts: 0, wrongAttempts: 0 },
+{ korean: '아는[아는 사이인]', english: 'acquainted', attempts: 0, wrongAttempts: 0 },
+{ korean: '최상[최적]의', english: 'optimal', attempts: 0, wrongAttempts: 0 },
+{ korean: '(the ~) (집합적) 귀족 (계급)', english: 'aristocracy', attempts: 0, wrongAttempts: 0 },
+{ korean: '신뢰성', english: 'credibility', attempts: 0, wrongAttempts: 0 },
+{ korean: '하락[침체]', english: 'downturn', attempts: 0, wrongAttempts: 0 },
+{ korean: '(복수 axes) (지)축', english: 'axis', attempts: 0, wrongAttempts: 0 },
+{ korean: '야만[미개], 만행', english: 'barbarism', attempts: 0, wrongAttempts: 0 },
+{ korean: '저작권[판권]', english: 'copyright', attempts: 0, wrongAttempts: 0 },
+{ korean: '섭취량, 흡입[주입]구', english: 'intake', attempts: 0, wrongAttempts: 0 },
+{ korean: '구멍[빈 공간], 충치 구멍', english: 'cavity', attempts: 0, wrongAttempts: 0 },
+{ korean: '다락(방)', english: 'attic', attempts: 0, wrongAttempts: 0 },
+{ korean: '분실물 취급소', english: 'lost and found', attempts: 0, wrongAttempts: 0 },
+{ korean: '출입[입장, 입국], 가입, 참가[출품](작), 입력', english: 'entry', attempts: 0, wrongAttempts: 0 },
+{ korean: '(큰) 규모[중요도], (별의) 광도, (지진의) 진도', english: 'magnitude', attempts: 0, wrongAttempts: 0 },
+{ korean: '감정 이입[공감]', english: 'empathy', attempts: 0, wrongAttempts: 0 },
+{ korean: '기저를 이루다[기저가 되다]', english: 'underlie', attempts: 0, wrongAttempts: 0 },
+{ korean: '작동[활성화]하다', english: 'activate', attempts: 0, wrongAttempts: 0 },
+{ korean: '괴롭히다[피해를 입히다]', english: 'afflict', attempts: 0, wrongAttempts: 0 },
+{ korean: '동화하다, 소화[흡수]하다', english: 'assimilate', attempts: 0, wrongAttempts: 0 },
+{ korean: '자백[고백]하다, 인정하다', english: 'confess', attempts: 0, wrongAttempts: 0 },
+{ korean: '덜커덕[쟁그랑]거리다', english: 'clatter', attempts: 0, wrongAttempts: 0 },
+{ korean: '여기다[간주하다]', english: 'deem', attempts: 0, wrongAttempts: 0 },
+{ korean: '(악영향에) 대응하다', english: 'counteract', attempts: 0, wrongAttempts: 0 },
+{ korean: '평범한[흔한], 평범한[흔한] 것', english: 'commonplace', attempts: 0, wrongAttempts: 0 },
+{ korean: '소형의, 콤팩트[휴대용 분갑]', english: 'compact', attempts: 0, wrongAttempts: 0 },
+{ korean: '상록의, 상록수', english: 'evergreen', attempts: 0, wrongAttempts: 0 },
+{ korean: '인도주의의, 인도주의자', english: 'humanitarian', attempts: 0, wrongAttempts: 0 },
+{ korean: '최고의', english: 'supreme', attempts: 0, wrongAttempts: 0 },
+{ korean: '변함없는', english: 'invariable', attempts: 0, wrongAttempts: 0 },
+{ korean: '불모의', english: 'barren', attempts: 0, wrongAttempts: 0 },
+{ korean: '외적인[외부의]', english: 'extrinsic', attempts: 0, wrongAttempts: 0 },
+{ korean: '포괄적인', english: 'comprehensive', attempts: 0, wrongAttempts: 0 },
+{ korean: '민간인', english: 'civilian', attempts: 0, wrongAttempts: 0 },
+{ korean: '사상자[피해자]', english: 'casualty', attempts: 0, wrongAttempts: 0 },
+{ korean: '지름[직경]', english: 'diameter', attempts: 0, wrongAttempts: 0 },
+{ korean: '긴 의자', english: 'couch', attempts: 0, wrongAttempts: 0 },
+{ korean: '겁쟁이', english: 'coward', attempts: 0, wrongAttempts: 0 },
+{ korean: '시내[개울]', english: 'creek', attempts: 0, wrongAttempts: 0 },
+{ korean: '독재 (국가)', english: 'dictatorship', attempts: 0, wrongAttempts: 0 },
+{ korean: '졸업장', english: 'diploma', attempts: 0, wrongAttempts: 0 },
+{ korean: '식욕, 욕구[욕망]', english: 'appetite', attempts: 0, wrongAttempts: 0 },
+{ korean: '잔치[연회], 축제, 맘껏 먹다', english: 'feast', attempts: 0, wrongAttempts: 0 },
+{ korean: '탐구[탐색], 탐구[탐색]하다', english: 'quest', attempts: 0, wrongAttempts: 0 },
+{ korean: '대표, 위임하다', english: 'delegate', attempts: 0, wrongAttempts: 0 },
+{ korean: '(성큼 성큼 걷는) 걸음, 진전, 성큼성큼 걷다[활보하다]', english: 'stride', attempts: 0, wrongAttempts: 0 },
+{ korean: '(짧은) 노, 노를 젓다', english: 'paddle', attempts: 0, wrongAttempts: 0 },
+{ korean: '', english: '', attempts: 0, wrongAttempts: 0 },
+{ korean: '욕하다, 저주하다, 욕, 저주', english: 'curse', attempts: 0, wrongAttempts: 0 },
+{ korean: '노력하다, 노력[시도]', english: 'endeavor', attempts: 0, wrongAttempts: 0 },
+{ korean: '강요하다', english: 'compel', attempts: 0, wrongAttempts: 0 },
+{ korean: '~로 이루어지다[구성되다], 구성하다', english: 'comprise', attempts: 0, wrongAttempts: 0 },
+{ korean: '(규칙·관습 등에) 따르다', english: 'conform', attempts: 0, wrongAttempts: 0 },
+{ korean: '갈망[열망]하다', english: 'crave', attempts: 0, wrongAttempts: 0 },
+{ korean: '배정[할당]하다', english: 'allocate', attempts: 0, wrongAttempts: 0 },
+{ korean: '크게 기쁘게 하다[기뻐하다]', english: 'rejoice', attempts: 0, wrongAttempts: 0 },
+{ korean: '(들어) 올리다, 높이다, 승진시키다', english: 'elevate', attempts: 0, wrongAttempts: 0 },
+{ korean: '분명한[명확한], 노골적인', english: 'explicit', attempts: 0, wrongAttempts: 0 },
+{ korean: '잔혹한[잔인한]', english: 'brutal', attempts: 0, wrongAttempts: 0 },
+{ korean: '연속적인[연이은]', english: 'consecutive', attempts: 0, wrongAttempts: 0 },
+{ korean: '(접촉) 전염성의', english: 'contagious', attempts: 0, wrongAttempts: 0 },
+{ korean: '별개의[분리된]', english: 'discrete', attempts: 0, wrongAttempts: 0 },
+{ korean: '신의[신성한]', english: 'divine', attempts: 0, wrongAttempts: 0 },
+{ korean: '오래 견디는[내구성이 있는]', english: 'durable', attempts: 0, wrongAttempts: 0 },
+{ korean: '직물, 구조', english: 'fabric', attempts: 0, wrongAttempts: 0 },
+{ korean: '적', english: 'foe', attempts: 0, wrongAttempts: 0 },
+{ korean: '파편[조각]', english: 'fragment', attempts: 0, wrongAttempts: 0 },
+{ korean: '지질(학)', english: 'geology', attempts: 0, wrongAttempts: 0 },
+{ korean: '자갈', english: 'gravel', attempts: 0, wrongAttempts: 0 },
+{ korean: '(지구·뇌의) 반구', english: 'hemisphere', attempts: 0, wrongAttempts: 0 },
+{ korean: '조명', english: 'lighting', attempts: 0, wrongAttempts: 0 },
+{ korean: '오두막(집)[막사]', english: 'hut', attempts: 0, wrongAttempts: 0 },
+{ korean: '평형[균형], (마음의) 평정', english: 'equilibrium', attempts: 0, wrongAttempts: 0 },
+{ korean: '대사관', english: 'embassy', attempts: 0, wrongAttempts: 0 },
+{ korean: '달아나다[도망치다]', english: 'flee', attempts: 0, wrongAttempts: 0 },
+{ korean: '속이다', english: 'deceive', attempts: 0, wrongAttempts: 0 },
+{ korean: '끈질기게 계속하다, 지속되다', english: 'persist', attempts: 0, wrongAttempts: 0 },
+{ korean: '감소시키다', english: 'deplete', attempts: 0, wrongAttempts: 0 },
+{ korean: '게걸스레 먹다, 탐독하다', english: 'devour', attempts: 0, wrongAttempts: 0 },
+{ korean: '동봉하다, 둘러싸다', english: 'enclose', attempts: 0, wrongAttempts: 0 },
+{ korean: '확대하다', english: 'enlarge', attempts: 0, wrongAttempts: 0 },
+{ korean: '권리[자격]를 주다, 제목을 붙이다', english: 'entitle', attempts: 0, wrongAttempts: 0 },
+{ korean: '호위하다', english: 'escort', attempts: 0, wrongAttempts: 0 },
+{ korean: '서사시, 서사시의', english: 'epic', attempts: 0, wrongAttempts: 0 },
+{ korean: '잠수함, 해저의', english: 'submarine', attempts: 0, wrongAttempts: 0 },
+{ korean: '하나뿐인[유일한], 발바닥[구두창]', english: 'sole', attempts: 0, wrongAttempts: 0 },
+{ korean: '탄력[신축성] 있는, 고무 밴드', english: 'elastic', attempts: 0, wrongAttempts: 0 },
+{ korean: '공동의, 관절', english: 'joint', attempts: 0, wrongAttempts: 0 },
+{ korean: '괜찮은[적절한], 예의[품위] 있는', english: 'decent', attempts: 0, wrongAttempts: 0 },
+{ korean: '우아한[고상한]', english: 'elegant', attempts: 0, wrongAttempts: 0 },
+{ korean: '태평스러운[느긋한]', english: 'easy-going', attempts: 0, wrongAttempts: 0 },
+{ korean: '정력적인[활기찬]', english: 'energetic', attempts: 0, wrongAttempts: 0 },
+{ korean: '여성의[여성스러운]', english: 'feminine', attempts: 0, wrongAttempts: 0 },
+{ korean: '좋아하는, 애정 어린', english: 'fond', attempts: 0, wrongAttempts: 0 },
+{ korean: '예언(력)', english: 'prophecy', attempts: 0, wrongAttempts: 0 },
+{ korean: '공포', english: 'fright', attempts: 0, wrongAttempts: 0 },
+{ korean: '악몽', english: 'nightmare', attempts: 0, wrongAttempts: 0 },
+{ korean: '장례(식)', english: 'funeral', attempts: 0, wrongAttempts: 0 },
+{ korean: '업무량[작업량]', english: 'workload', attempts: 0, wrongAttempts: 0 },
+{ korean: '막간[휴게 시간]', english: 'intermission', attempts: 0, wrongAttempts: 0 },
+{ korean: '직감[직관]', english: 'intuition', attempts: 0, wrongAttempts: 0 },
+{ korean: '위도', english: 'latitude', attempts: 0, wrongAttempts: 0 },
+{ korean: '노예 제도, 노예 (상태, 신분)', english: 'slavery', attempts: 0, wrongAttempts: 0 },
+{ korean: '색인[찾아보기], (복수 indices) 지표[지수], 색인을 만들다', english: 'index', attempts: 0, wrongAttempts: 0 },
+{ korean: '임대차 계약, 임대[임차]하다', english: 'lease', attempts: 0, wrongAttempts: 0 },
+{ korean: '언뜻 봄, 언뜻 보다', english: 'glimpse', attempts: 0, wrongAttempts: 0 },
+{ korean: '전투[싸움], 싸우다, 방지하다', english: 'combat', attempts: 0, wrongAttempts: 0 },
+{ korean: '우르릉거리다[우렁차게 말하다], 호황을 맞다[번창하다], 붐[호황]', english: 'boom', attempts: 0, wrongAttempts: 0 },
+{ korean: '숙박하다[숙박시키다], 박히다, 오두막', english: 'lodge', attempts: 0, wrongAttempts: 0 },
+{ korean: '퍼덕거리다[펄럭이다], 덮개, 펄럭임', english: 'flap', attempts: 0, wrongAttempts: 0 },
+{ korean: '휙 던지다[뒤집다, 넘기다], 휙 던지기', english: 'flip', attempts: 0, wrongAttempts: 0 },
+{ korean: '처형하다, 실행[집행]하다', english: 'execute', attempts: 0, wrongAttempts: 0 },
+{ korean: '(숨을) 내쉬다[내뿜다]', english: 'exhale', attempts: 0, wrongAttempts: 0 },
+{ korean: '쫓아내다[추방하다]', english: 'expel', attempts: 0, wrongAttempts: 0 },
+{ korean: '(꿰)뚫다[관통하다]', english: 'pierce', attempts: 0, wrongAttempts: 0 },
+{ korean: '(불을) 끄다', english: 'extinguish', attempts: 0, wrongAttempts: 0 },
+{ korean: '미끄러지듯 움직이다, 활공하다', english: 'glide', attempts: 0, wrongAttempts: 0 },
+{ korean: '(무거운 것을) 끌어당기다', english: 'haul', attempts: 0, wrongAttempts: 0 },
+{ korean: '공간의', english: 'spatial', attempts: 0, wrongAttempts: 0 },
+{ korean: '읽고 쓸 수 있는', english: 'literate', attempts: 0, wrongAttempts: 0 },
+{ korean: '명예로운[존경할 만한]', english: 'honorable', attempts: 0, wrongAttempts: 0 },
+{ korean: '인간미 없는, 특정 개인과 상관없는', english: 'impersonal', attempts: 0, wrongAttempts: 0 },
+{ korean: '필수 불가결한', english: 'indispensable', attempts: 0, wrongAttempts: 0 },
+{ korean: '이[치아, 치과]의', english: 'dental', attempts: 0, wrongAttempts: 0 },
+{ korean: '안감, (인체 부위의) 내벽', english: 'lining', attempts: 0, wrongAttempts: 0 },
+{ korean: '(전쟁·사고·질병 등의) 발발[발생]', english: 'outbreak', attempts: 0, wrongAttempts: 0 },
+{ korean: '둘레', english: 'perimeter', attempts: 0, wrongAttempts: 0 },
+{ korean: '대리석, 구슬', english: 'marble', attempts: 0, wrongAttempts: 0 },
+{ korean: '형상화[이미지], 화상[사진]', english: 'imagery', attempts: 0, wrongAttempts: 0 },
+{ korean: '오해[잘못된 통념]', english: 'misconception', attempts: 0, wrongAttempts: 0 },
+{ korean: '적당함[절제]', english: 'moderation', attempts: 0, wrongAttempts: 0 },
+{ korean: '향수[과거에 대한 그리움]', english: 'nostalgia', attempts: 0, wrongAttempts: 0 },
+{ korean: '세균[병균], 싹[배아]', english: 'germ', attempts: 0, wrongAttempts: 0 },
+{ korean: '설교', english: 'sermon', attempts: 0, wrongAttempts: 0 },
+{ korean: '(동물의) 털, 모피', english: 'fur', attempts: 0, wrongAttempts: 0 },
+{ korean: '산수, 산수의', english: 'arithmetic', attempts: 0, wrongAttempts: 0 },
+{ korean: '내부, 내부의', english: 'interior', attempts: 0, wrongAttempts: 0 },
+{ korean: '위신[명망], 고급의, 일류의', english: 'prestige', attempts: 0, wrongAttempts: 0 },
+{ korean: '여분[잉여], 흑자, 여분[잉여]의', english: 'surplus', attempts: 0, wrongAttempts: 0 },
+{ korean: '부하[하급자], 종속된[부차적인]', english: 'subordinate', attempts: 0, wrongAttempts: 0 },
+{ korean: '속이 빈, 우묵한, 공허한, 움푹 꺼진 곳', english: 'hollow', attempts: 0, wrongAttempts: 0 },
+{ korean: '밝게 비추다[조명하다], 설명하다', english: 'illuminate', attempts: 0, wrongAttempts: 0 },
+{ korean: '해치다[손상시키다]', english: 'impair', attempts: 0, wrongAttempts: 0 },
+{ korean: '시작[착수]하다, 가입시키다', english: 'initiate', attempts: 0, wrongAttempts: 0 },
+{ korean: '절연[단열, 방음]하다, 격리하다', english: 'insulate', attempts: 0, wrongAttempts: 0 },
+{ korean: '뜨다[짜다]', english: 'knit', attempts: 0, wrongAttempts: 0 },
+{ korean: '해방하다', english: 'liberate', attempts: 0, wrongAttempts: 0 },
+{ korean: '살피다, 훑어보다, 스캔하다', english: 'scan', attempts: 0, wrongAttempts: 0 },
+{ korean: '폐지하다', english: 'abolish', attempts: 0, wrongAttempts: 0 },
+{ korean: '(가격이) 알맞은', english: 'affordable', attempts: 0, wrongAttempts: 0 },
+{ korean: '손상되지 않은[온전한]', english: 'intact', attempts: 0, wrongAttempts: 0 },
+{ korean: '주의[귀]를 기울이는', english: 'attentive', attempts: 0, wrongAttempts: 0 },
+{ korean: '~할 것 같은, ~하기 쉬운, 법적 책임이 있는', english: 'liable', attempts: 0, wrongAttempts: 0 },
+{ korean: '둘[이중]의', english: 'dual', attempts: 0, wrongAttempts: 0 },
+{ korean: '성가신 존재[폐]', english: 'nuisance', attempts: 0, wrongAttempts: 0 },
+{ korean: '단점[결점]', english: 'shortcoming', attempts: 0, wrongAttempts: 0 },
+{ korean: '비만', english: 'obesity', attempts: 0, wrongAttempts: 0 },
+{ korean: '(the ~) 가능성[확률],역경[곤란], 차이', english: 'odds', attempts: 0, wrongAttempts: 0 },
+{ korean: '광학', english: 'optics', attempts: 0, wrongAttempts: 0 },
+{ korean: '(대)목장', english: 'ranch', attempts: 0, wrongAttempts: 0 },
+{ korean: '조약돌[자갈]', english: 'pebble', attempts: 0, wrongAttempts: 0 },
+{ korean: '처벌, 벌금[벌칙]', english: 'penalty', attempts: 0, wrongAttempts: 0 },
+{ korean: '향수, 향기', english: 'perfume', attempts: 0, wrongAttempts: 0 },
+{ korean: '오토바이', english: 'motorcycle', attempts: 0, wrongAttempts: 0 },
+{ korean: '집착하게 하다', english: 'obsess', attempts: 0, wrongAttempts: 0 },
+{ korean: '관통하다', english: 'penetrate', attempts: 0, wrongAttempts: 0 },
+{ korean: '집행[시행]하다, 강제[강요]하다', english: 'enforce', attempts: 0, wrongAttempts: 0 },
+{ korean: '마음을 사로잡다', english: 'preoccupy', attempts: 0, wrongAttempts: 0 },
+{ korean: '선언[선포]하다', english: 'proclaim', attempts: 0, wrongAttempts: 0 },
+{ korean: '나아가게 하다[추진하다]', english: 'propel', attempts: 0, wrongAttempts: 0 },
+{ korean: '방사[방출]하다', english: 'radiate', attempts: 0, wrongAttempts: 0 },
+{ korean: '안심시키다', english: 'reassure', attempts: 0, wrongAttempts: 0 },
+{ korean: '모집하다', english: 'recruit', attempts: 0, wrongAttempts: 0 },
+{ korean: '~이 되게 하다, 주다[제공하다], 표현[번역]하다', english: 'render', attempts: 0, wrongAttempts: 0 },
+{ korean: '3중[3배]의, 3배가 되다', english: 'triple', attempts: 0, wrongAttempts: 0 },
+{ korean: '길들여진, 길들이다', english: 'tame', attempts: 0, wrongAttempts: 0 },
+{ korean: '완전한, 말하다[소리를 내다]', english: 'utter', attempts: 0, wrongAttempts: 0 },
+{ korean: '번갈아 일어나는, 하나 거르는, 번갈아 일어나다[하다]', english: 'alternate', attempts: 0, wrongAttempts: 0 },
+{ korean: '닳은, 지친, wear의 과거분사', english: 'worn', attempts: 0, wrongAttempts: 0 },
+{ korean: '통화[화폐]의', english: 'monetary', attempts: 0, wrongAttempts: 0 },
+{ korean: '영원히 살지 못하는', english: 'mortal', attempts: 0, wrongAttempts: 0 },
+{ korean: '무일푼의', english: 'penniless', attempts: 0, wrongAttempts: 0 },
+{ korean: '능숙한', english: 'proficient', attempts: 0, wrongAttempts: 0 },
+{ korean: '시간을 지키는', english: 'punctual', attempts: 0, wrongAttempts: 0 },
+{ korean: '생리학, 생리 기능', english: 'physiology', attempts: 0, wrongAttempts: 0 },
+{ korean: '집들이', english: 'housewarming', attempts: 0, wrongAttempts: 0 },
+{ korean: '(복수 loaves) 빵 한 덩이', english: 'loaf', attempts: 0, wrongAttempts: 0 },
+{ korean: '산문', english: 'prose', attempts: 0, wrongAttempts: 0 },
+{ korean: '직사각형', english: 'rectangle', attempts: 0, wrongAttempts: 0 },
+{ korean: '규칙성', english: 'regularity', attempts: 0, wrongAttempts: 0 },
+{ korean: '리허설[예행연습]', english: 'rehearsal', attempts: 0, wrongAttempts: 0 },
+{ korean: '수도꼭지', english: 'faucet', attempts: 0, wrongAttempts: 0 },
+{ korean: '분수, 작은 부분[일부]', english: 'fraction', attempts: 0, wrongAttempts: 0 },
+{ korean: '완료[완성]', english: 'completion', attempts: 0, wrongAttempts: 0 },
+{ korean: '역병[악성 전염병], (the ~) 페스트, 괴롭히다', english: 'plague', attempts: 0, wrongAttempts: 0 },
+{ korean: '서약[맹세], 서약[맹세]하다', english: 'pledge', attempts: 0, wrongAttempts: 0 },
+{ korean: '조사, (space ~) 무인 우주 탐사선, 조사하다', english: 'probe', attempts: 0, wrongAttempts: 0 },
+{ korean: '호기심을 불러일으키다, 모의하다, 모의[음모]', english: 'intrigue', attempts: 0, wrongAttempts: 0 },
+{ korean: '보유[유지]하다', english: 'retain', attempts: 0, wrongAttempts: 0 },
+{ korean: '되찾다[회수하다], (정보를) 검색하다', english: 'retrieve', attempts: 0, wrongAttempts: 0 },
+{ korean: '바느질하다[깁다]', english: 'sew', attempts: 0, wrongAttempts: 0 },
+{ korean: '단순화하다', english: 'simplify', attempts: 0, wrongAttempts: 0 },
+{ korean: '(~에) 놓다', english: 'situate', attempts: 0, wrongAttempts: 0 },
+{ korean: '도살하다, 대량 학살하다', english: 'slaughter', attempts: 0, wrongAttempts: 0 },
+{ korean: '흐느껴 울다[흐느끼며 말하다]', english: 'sob', attempts: 0, wrongAttempts: 0 },
+{ korean: '명시하다', english: 'specify', attempts: 0, wrongAttempts: 0 },
+{ korean: '(물·가루를) 뿌리다', english: 'sprinkle', attempts: 0, wrongAttempts: 0 },
+{ korean: '저항[거부]할 수 없는', english: 'irresistible', attempts: 0, wrongAttempts: 0 },
+{ korean: '유명한', english: 'renowned', attempts: 0, wrongAttempts: 0 },
+{ korean: '경직된[딱딱한]', english: 'rigid', attempts: 0, wrongAttempts: 0 },
+{ korean: '수익성 있는[유익한]', english: 'profitable', attempts: 0, wrongAttempts: 0 },
+{ korean: '자연스러운[즉흥적인]', english: 'spontaneous', attempts: 0, wrongAttempts: 0 },
+{ korean: '끈적거리는', english: 'sticky', attempts: 0, wrongAttempts: 0 },
+{ korean: '합성[인조]의', english: 'synthetic', attempts: 0, wrongAttempts: 0 },
+{ korean: '약국, 약학', english: 'pharmacy', attempts: 0, wrongAttempts: 0 },
+{ korean: '정서, 감상', english: 'sentiment', attempts: 0, wrongAttempts: 0 },
+{ korean: '부분[조각]', english: 'segment', attempts: 0, wrongAttempts: 0 },
+{ korean: '(복수 millennia[millenniums]) 천년', english: 'millennium', attempts: 0, wrongAttempts: 0 },
+{ korean: '단순[간단]', english: 'simplicity', attempts: 0, wrongAttempts: 0 },
+{ korean: '기록 (보관소)', english: 'archive', attempts: 0, wrongAttempts: 0 },
+{ korean: '큰 가지', english: 'bough', attempts: 0, wrongAttempts: 0 },
+{ korean: '표본[견본]', english: 'specimen', attempts: 0, wrongAttempts: 0 },
+{ korean: '등뼈[척추], 기개[용기]', english: 'spine', attempts: 0, wrongAttempts: 0 },
+{ korean: '삽, 삽으로 뜨다', english: 'shovel', attempts: 0, wrongAttempts: 0 },
+{ korean: '줄기, 몰래 뒤쫓다, 활보하다', english: 'stalk', attempts: 0, wrongAttempts: 0 },
+{ korean: '신호[큐], 신호를 주다', english: 'cue', attempts: 0, wrongAttempts: 0 },
+{ korean: '보충(물), 부록, 보충하다', english: 'supplement', attempts: 0, wrongAttempts: 0 },
+{ korean: '악취를 풍기다, 악취', english: 'stink', attempts: 0, wrongAttempts: 0 },
+{ korean: '삐[빵] 소리를 내다, 삐[빵] 소리', english: 'beep', attempts: 0, wrongAttempts: 0 },
+{ korean: '활짝 웃다, 활짝 웃음', english: 'grin', attempts: 0, wrongAttempts: 0 },
+{ korean: '비틀다[꼬다], (발목 등을) 삐다, 꼬임, 비틀기', english: 'twist', attempts: 0, wrongAttempts: 0 },
+{ korean: '최소화하다, 축소하다', english: 'minimize', attempts: 0, wrongAttempts: 0 },
+{ korean: '빼다', english: 'subtract', attempts: 0, wrongAttempts: 0 },
+{ korean: '능가하다[넘어서다]', english: 'surpass', attempts: 0, wrongAttempts: 0 },
+{ korean: '끝나다[종료하다]', english: 'terminate', attempts: 0, wrongAttempts: 0 },
+{ korean: '약화시키다', english: 'undermine', attempts: 0, wrongAttempts: 0 },
+{ korean: '환기하다[통풍시키다]', english: 'ventilate', attempts: 0, wrongAttempts: 0 },
+{ korean: '진짜의', english: 'authentic', attempts: 0, wrongAttempts: 0 },
+{ korean: '긴[장황한]', english: 'lengthy', attempts: 0, wrongAttempts: 0 },
+{ korean: '자기 성찰적인', english: 'introspective', attempts: 0, wrongAttempts: 0 },
+{ korean: '온화한[온대의], 절제하는', english: 'temperate', attempts: 0, wrongAttempts: 0 },
+{ korean: '유독한[독성의]', english: 'toxic', attempts: 0, wrongAttempts: 0 },
+{ korean: '만장일치의', english: 'unanimous', attempts: 0, wrongAttempts: 0 },
+{ korean: '참을 수 없는', english: 'unbearable', attempts: 0, wrongAttempts: 0 },
+{ korean: '(토론의) 패널[자문단], (계기)판', english: 'panel', attempts: 0, wrongAttempts: 0 },
+{ korean: '(세포) 조직, 화장지', english: 'tissue', attempts: 0, wrongAttempts: 0 },
+{ korean: '등록 상표', english: 'trademark', attempts: 0, wrongAttempts: 0 },
+{ korean: '(사회·정치적) 불안', english: 'unrest', attempts: 0, wrongAttempts: 0 },
+{ korean: '정맥', english: 'vein', attempts: 0, wrongAttempts: 0 },
+{ korean: '직전', english: 'verge', attempts: 0, wrongAttempts: 0 },
+{ korean: '요람', english: 'cradle', attempts: 0, wrongAttempts: 0 },
+{ korean: '배, (혈)관', english: 'vessel', attempts: 0, wrongAttempts: 0 },
+{ korean: '영역[범위], 왕국', english: 'realm', attempts: 0, wrongAttempts: 0 },
+{ korean: '문구류[문방구], 편지지', english: 'stationery', attempts: 0, wrongAttempts: 0 },
+{ korean: '지갑', english: 'wallet', attempts: 0, wrongAttempts: 0 },
+{ korean: '돌풍, 폭발, 폭파하다, (~ off) 발사되다', english: 'blast', attempts: 0, wrongAttempts: 0 },
+{ korean: '지지[옹호]하다, 지지[옹호]자', english: 'advocate', attempts: 0, wrongAttempts: 0 },
+{ korean: '불법화하다, 범법자[도망자]', english: 'outlaw', attempts: 0, wrongAttempts: 0 },
+{ korean: '울부짖다[통곡하다], 울부짖음[통곡]', english: 'wail', attempts: 0, wrongAttempts: 0 },
+{ korean: '(꼬리·손가락·머리를) 흔들다', english: 'wag', attempts: 0, wrongAttempts: 0 },
+{ korean: '갈망[동경]하다', english: 'yearn', attempts: 0, wrongAttempts: 0 },
+{ korean: '수용하다[숙박시키다]', english: 'accommodate', attempts: 0, wrongAttempts: 0 },
+{ korean: '박살내다[박살나다], 세게 (부딪)치다', english: 'smash', attempts: 0, wrongAttempts: 0 },
+{ korean: '중재[조정]하다', english: 'mediate', attempts: 0, wrongAttempts: 0 },
+{ korean: '떼다[분리하다]', english: 'detach', attempts: 0, wrongAttempts: 0 },
+{ korean: '조심하다', english: 'beware', attempts: 0, wrongAttempts: 0 },
+{ korean: '지향하게 하다, 적응하게 하다', english: 'orient', attempts: 0, wrongAttempts: 0 },
+{ korean: '불안한[불편한]', english: 'uneasy', attempts: 0, wrongAttempts: 0 },
+{ korean: '주기적인', english: 'periodic', attempts: 0, wrongAttempts: 0 },
+{ korean: '상처받기 쉬운[연약한, 취약한]', english: 'vulnerable', attempts: 0, wrongAttempts: 0 },
+{ korean: '불쌍한[비참한], 지독한', english: 'wretched', attempts: 0, wrongAttempts: 0 },
+{ korean: '사악한, 심술궂은', english: 'wicked', attempts: 0, wrongAttempts: 0 },
+{ korean: '애매모호한', english: 'ambiguous', attempts: 0, wrongAttempts: 0 },
+{ korean: '감각의', english: 'sensory', attempts: 0, wrongAttempts: 0 },
+{ korean: '마법사', english: 'wizard', attempts: 0, wrongAttempts: 0 },
+{ korean: '동물학', english: 'zoology', attempts: 0, wrongAttempts: 0 },
+{ korean: '소작농[소농]', english: 'peasant', attempts: 0, wrongAttempts: 0 },
+{ korean: '해부(학), 신체 (구조)', english: 'anatomy', attempts: 0, wrongAttempts: 0 },
+{ korean: '', english: '', attempts: 0, wrongAttempts: 0 },
+{ korean: '(새의) 부리', english: 'beak', attempts: 0, wrongAttempts: 0 },
+{ korean: '위, 배[복부]', english: 'belly', attempts: 0, wrongAttempts: 0 },
+{ korean: '트라우마[정신적 외상], 충격적인 경험', english: 'trauma', attempts: 0, wrongAttempts: 0 },
+{ korean: '식물학', english: 'botany', attempts: 0, wrongAttempts: 0 },
+{ korean: '(꽃의) 꿀, (진한) 과즙', english: 'nectar', attempts: 0, wrongAttempts: 0 },
+{ korean: '관료제[관료주의], (집합적) 관료', english: 'bureaucracy', attempts: 0, wrongAttempts: 0 },
+{ korean: '상관관계', english: 'correlation', attempts: 0, wrongAttempts: 0 },
+{ korean: '향상[고양]시키다, 들어[밀어] 올리다', english: 'boost', attempts: 0, wrongAttempts: 0 },
+{ korean: '분명히 하다', english: 'clarify', attempts: 0, wrongAttempts: 0 },
+{ korean: '발효되다[발효시키다]', english: 'ferment', attempts: 0, wrongAttempts: 0 },
+{ korean: '넓어지다[넓히다], 커지다[확대하다]', english: 'widen', attempts: 0, wrongAttempts: 0 },
+{ korean: '(법, 명령 등에) 따르다', english: 'comply', attempts: 0, wrongAttempts: 0 },
+{ korean: '뽑아내다[추출하다]', english: 'extract', attempts: 0, wrongAttempts: 0 },
+{ korean: '묘사하다[그리다]', english: 'portray', attempts: 0, wrongAttempts: 0 },
+{ korean: '빠지다[탐닉하다]', english: 'indulge', attempts: 0, wrongAttempts: 0 },
+{ korean: '중간[중기]의, 중간고사', english: 'midterm', attempts: 0, wrongAttempts: 0 },
+{ korean: '미(학)의, (-s) 미학', english: '(a)esthetic', attempts: 0, wrongAttempts: 0 },
+{ korean: '긍정의, 긍정', english: 'affirmative', attempts: 0, wrongAttempts: 0 },
+{ korean: '대각선[사선]의, 대각선[사선]', english: 'diagonal', attempts: 0, wrongAttempts: 0 },
+{ korean: '최초의, 처녀', english: 'maiden', attempts: 0, wrongAttempts: 0 },
+{ korean: '엄(격)한, 선미[고물]', english: 'stern', attempts: 0, wrongAttempts: 0 },
+{ korean: '~하는 경향이 있는[~하기 쉬운], 적절한', english: 'apt', attempts: 0, wrongAttempts: 0 },
+{ korean: '시간 순서대로의[연대순의]', english: 'chronological', attempts: 0, wrongAttempts: 0 },
+{ korean: '경험의[실증적인]', english: 'empirical', attempts: 0, wrongAttempts: 0 },
+{ korean: '거친[굵은], 상스러운[야비한]', english: 'coarse', attempts: 0, wrongAttempts: 0 },
+{ korean: '어마어마한[가공할]', english: 'formidable', attempts: 0, wrongAttempts: 0 },
+{ korean: '이슬', english: 'dew', attempts: 0, wrongAttempts: 0 },
+{ korean: '방[실], (의회의) 의원', english: 'chamber', attempts: 0, wrongAttempts: 0 },
+{ korean: '외교관', english: 'diplomat', attempts: 0, wrongAttempts: 0 },
+{ korean: '자아', english: 'ego', attempts: 0, wrongAttempts: 0 },
+{ korean: '기업[회사], 사업, 진취적 기상', english: 'enterprise', attempts: 0, wrongAttempts: 0 },
+{ korean: '부산물, 부작용', english: 'by-product', attempts: 0, wrongAttempts: 0 },
+{ korean: '숫자', english: 'numeral', attempts: 0, wrongAttempts: 0 },
+{ korean: '(복수 -s[formulae]) (공)식', english: 'formula', attempts: 0, wrongAttempts: 0 },
+{ korean: '전자레인지', english: 'microwave', attempts: 0, wrongAttempts: 0 },
+{ korean: '미개척지, 국경', english: 'frontier', attempts: 0, wrongAttempts: 0 },
+{ korean: '증오[혐오]', english: 'hatred', attempts: 0, wrongAttempts: 0 },
+{ korean: '흐릿해지다[흐릿하게 하다], 흐릿한 형체[것]', english: 'blur', attempts: 0, wrongAttempts: 0 },
+{ korean: '노려보다, 눈이 부시게 빛나다, 눈이 부신 빛, 노려봄', english: 'glare', attempts: 0, wrongAttempts: 0 },
+{ korean: '시행하다, 기구[도구]', english: 'implement', attempts: 0, wrongAttempts: 0 },
+{ korean: '재잘거리다, 지저귀다, 수다', english: 'chatter', attempts: 0, wrongAttempts: 0 },
+{ korean: '두려워하다, 두려움', english: 'dread', attempts: 0, wrongAttempts: 0 },
+{ korean: '앞지르다[추월하다], 갑자기 닥치다', english: 'overtake', attempts: 0, wrongAttempts: 0 },
+{ korean: '알아차리다[식별하다]', english: 'discern', attempts: 0, wrongAttempts: 0 },
+{ korean: '대신[대체]하다, 쫓아내다', english: 'displace', attempts: 0, wrongAttempts: 0 },
+{ korean: '(~ of) 처리하다', english: 'dispose', attempts: 0, wrongAttempts: 0 },
+{ korean: '녹(이)다[용해하다]', english: 'dissolve', attempts: 0, wrongAttempts: 0 },
+{ korean: '이해시키다[깨우치다]', english: 'enlighten', attempts: 0, wrongAttempts: 0 },
+{ korean: '가구를 비치하다, 제공[공급]하다', english: 'furnish', attempts: 0, wrongAttempts: 0 },
+{ korean: '비뚤어진, 부정직한', english: 'crooked', attempts: 0, wrongAttempts: 0 },
+{ korean: '대략의, 조잡한, 상스러운, 천연 그대로의', english: 'crude', attempts: 0, wrongAttempts: 0 },
+{ korean: '비유적인, 구상[조형]의', english: 'figurative', attempts: 0, wrongAttempts: 0 },
+{ korean: '강(력)한', english: 'potent', attempts: 0, wrongAttempts: 0 },
+{ korean: '열심인[열망하는], 예민한[예리한]', english: 'keen', attempts: 0, wrongAttempts: 0 },
+{ korean: '합법의[정당한]', english: 'legitimate', attempts: 0, wrongAttempts: 0 },
+{ korean: '주목할 만한', english: 'notable', attempts: 0, wrongAttempts: 0 },
+{ korean: '수입[세입]', english: 'revenue', attempts: 0, wrongAttempts: 0 },
+{ korean: '주도권[결단력], 새로운 계획', english: 'initiative', attempts: 0, wrongAttempts: 0 },
+{ korean: '원고', english: 'manuscript', attempts: 0, wrongAttempts: 0 },
+{ korean: '게시판', english: 'bulletin board', attempts: 0, wrongAttempts: 0 },
+{ korean: '천문대[기상대]', english: 'observatory', attempts: 0, wrongAttempts: 0 },
+{ korean: '베개', english: 'pillow', attempts: 0, wrongAttempts: 0 },
+{ korean: '임금[노임]', english: 'wage', attempts: 0, wrongAttempts: 0 },
+{ korean: '세입자[소작인]', english: 'tenant', attempts: 0, wrongAttempts: 0 },
+{ korean: '비유[유추], 유사점', english: 'analogy', attempts: 0, wrongAttempts: 0 },
+{ korean: '(동식물의) 잡종, 혼성체[혼합물]', english: 'hybrid', attempts: 0, wrongAttempts: 0 },
+{ korean: '녹, 녹슬다', english: 'rust', attempts: 0, wrongAttempts: 0 },
+{ korean: '격분, 격분하게 하다', english: 'outrage', attempts: 0, wrongAttempts: 0 },
+{ korean: '채찍, 채찍질하다, 휘젓다[거품을 내다]', english: 'whip', attempts: 0, wrongAttempts: 0 },
+{ korean: '삼가다[자제하다], 후렴', english: 'refrain', attempts: 0, wrongAttempts: 0 },
+{ korean: '(차량·배를) 견인하다, 견인', english: 'tow', attempts: 0, wrongAttempts: 0 },
+{ korean: '빙빙[휙휙] 돌(리)다, 빙빙[휙휙] 돌기', english: 'whirl', attempts: 0, wrongAttempts: 0 },
+{ korean: '검사[점검]하다', english: 'inspect', attempts: 0, wrongAttempts: 0 },
+{ korean: '침범하다, 방해하다', english: 'intrude', attempts: 0, wrongAttempts: 0 },
+{ korean: '뒤에 처지다[뒤떨어지다]', english: 'lag', attempts: 0, wrongAttempts: 0 },
+{ korean: '길을 찾다, 항해하다', english: 'navigate', attempts: 0, wrongAttempts: 0 },
+{ korean: '강제[강요]하다, 돕다', english: 'oblige', attempts: 0, wrongAttempts: 0 },
+{ korean: '연기하다[미루다]', english: 'postpone', attempts: 0, wrongAttempts: 0 },
+{ korean: '경시하다[대단찮게 생각하다]', english: 'downplay', attempts: 0, wrongAttempts: 0 },
+{ korean: '부수적인', english: 'incidental', attempts: 0, wrongAttempts: 0 },
+{ korean: '최소(한)의', english: 'minimal', attempts: 0, wrongAttempts: 0 },
+{ korean: '통통한[포동포동한]', english: 'plump', attempts: 0, wrongAttempts: 0 },
+{ korean: '신중한', english: 'prudent', attempts: 0, wrongAttempts: 0 },
+{ korean: '내키지 않는[마지못해 하는]', english: 'reluctant', attempts: 0, wrongAttempts: 0 },
+{ korean: '순전한, 완전한, 몹시 가파른, 아주 얇은', english: 'sheer', attempts: 0, wrongAttempts: 0 },
+{ korean: '다가오는', english: 'upcoming', attempts: 0, wrongAttempts: 0 },
+{ korean: '장식(품), 장신구', english: 'ornament', attempts: 0, wrongAttempts: 0 },
+{ korean: '창피[치욕]', english: 'humiliation', attempts: 0, wrongAttempts: 0 },
+{ korean: '기하학', english: 'geometry', attempts: 0, wrongAttempts: 0 },
+{ korean: '설문지', english: 'questionnaire', attempts: 0, wrongAttempts: 0 },
+{ korean: '횃불', english: 'torch', attempts: 0, wrongAttempts: 0 },
+{ korean: '영향, 함축[암시], 연루', english: 'implication', attempts: 0, wrongAttempts: 0 },
+{ korean: '비대칭, 불균형', english: 'asymmetry', attempts: 0, wrongAttempts: 0 },
+{ korean: '황혼[땅거미]', english: 'twilight', attempts: 0, wrongAttempts: 0 },
+{ korean: '활기[정력]', english: 'vigor', attempts: 0, wrongAttempts: 0 },
+{ korean: '선(행)[미덕, 장점]', english: 'virtue', attempts: 0, wrongAttempts: 0 },
+{ korean: '콧수염', english: 'mustache', attempts: 0, wrongAttempts: 0 },
+{ korean: '탄수화물', english: 'carbohydrate', attempts: 0, wrongAttempts: 0 },
+{ korean: '(~에) 끌리다, 인력에 끌리다', english: 'gravitate', attempts: 0, wrongAttempts: 0 },
+{ korean: '기억하다', english: 'recollect', attempts: 0, wrongAttempts: 0 },
+{ korean: '사임하다', english: 'resign', attempts: 0, wrongAttempts: 0 },
+{ korean: '지지하다, (질서 등을) 유지하다', english: 'uphold', attempts: 0, wrongAttempts: 0 },
+{ korean: '(갑자기) 사라지다', english: 'vanish', attempts: 0, wrongAttempts: 0 },
+{ korean: '개입하다', english: 'intervene', attempts: 0, wrongAttempts: 0 },
+{ korean: '기르다, 뒤, 뒤의', english: 'rear', attempts: 0, wrongAttempts: 0 },
+{ korean: '대화하다, 반대[역](의)', english: 'converse', attempts: 0, wrongAttempts: 0 },
+{ korean: '파산한, 파산시키다, 파산자', english: 'bankrupt', attempts: 0, wrongAttempts: 0 },
+{ korean: '평행한, 유사한[병행하는], 유사점, 위(도)선, 유사하다', english: 'parallel', attempts: 0, wrongAttempts: 0 },
+{ korean: '고급의[장식적인], 공상, 좋아하다', english: 'fancy', attempts: 0, wrongAttempts: 0 },
+{ korean: '상반된 감정[호불호]이 엇갈리는', english: 'ambivalent', attempts: 0, wrongAttempts: 0 },
+{ korean: '유인의', english: 'manned', attempts: 0, wrongAttempts: 0 },
+{ korean: '체계[조직]적인', english: 'systematic', attempts: 0, wrongAttempts: 0 },
+
+];
+
+
+    // 메인 퀴즈 컴포넌트
+    const VocabTest = () => {
+      const [studentInfo, setStudentInfo] = React.useState({ name: '', message: '' });
+      const [isStarted, setIsStarted] = React.useState(false);
+      const [vocabList, setVocabList] = React.useState([]);
+      const [currentWordIndex, setCurrentWordIndex] = React.useState(0);
+      const [options, setOptions] = React.useState([]);
+      const [isComplete, setIsComplete] = React.useState(false);
+      const [feedback, setFeedback] = React.useState(null);
+      const [totalProgress, setTotalProgress] = React.useState(0);
+      const [streak, setStreak] = React.useState(0);
+      const [completionTime, setCompletionTime] = React.useState(null);
+
+      // 타이머 관련 state 및 ref
+      const [timeLeft, setTimeLeft] = React.useState(10);
+      const timerRef = React.useRef(null);
+      const [timerEnabled, setTimerEnabled] = React.useState(true);
+      // 틀린 단어를 맞출 때까지 반복 여부 토글 (시작 화면에서 선택)
+      const [repeatUntilCorrect, setRepeatUntilCorrect] = React.useState(false);
+
+      // 정답 선택지를 생성하는 함수
+      const generateOptions = React.useCallback((correctWord) => {
+          const otherWords = fullVocabList
+              .filter(word => word.english !== correctWord)
+              .map(word => word.english);
+          return shuffleArray([correctWord, ...shuffleArray(otherWords).slice(0, 5)]);
+      }, []);
+
+      // 퀴즈 시작 시 30개 랜덤 단어 선택
+      React.useEffect(() => {
+          if (isStarted) {
+              const selectedWords = shuffleArray([...fullVocabList])
+                  .slice(0, 30)
+                  .map(word => ({ ...word }));
+              setVocabList(selectedWords);
+          }
+      }, [isStarted]);
+
+      // 현재 단어가 바뀔 때마다 선택지 업데이트
+      React.useEffect(() => {
+          if (!isComplete && vocabList.length > 0) {
+              setOptions(generateOptions(vocabList[currentWordIndex].english));
+          }
+      }, [currentWordIndex, isComplete, vocabList, generateOptions]);
+
+      // 진행률 업데이트 (총 30문제 대비 맞춘 단어 수)
+      React.useEffect(() => {
+          if (vocabList.length > 0) {
+              const progress = (1 - (vocabList.length / 30)) * 100;
+              setTotalProgress(progress);
+          }
+      }, [vocabList]);
+
+      // 타이머 효과: dependency에 currentWordIndex, vocabList 등을 포함하여 문제 전환 시 타이머 재시작
+      React.useEffect(() => {
+          if (timerEnabled && !isComplete && isStarted) {
+              setTimeLeft(10);
+              if (timerRef.current) {
+                  clearInterval(timerRef.current);
+              }
+              timerRef.current = setInterval(() => {
+                  setTimeLeft(prev => {
+                      if (prev <= 1) {
+                          clearInterval(timerRef.current);
+                          timerRef.current = null;
+                          // 타이머 만료 → 자동 오답 처리
+                          handleAnswer(null);
+                          return 0;
+                      }
+                      return prev - 1;
+                  });
+              }, 1000);
+              return () => {
+                  if (timerRef.current) {
+                      clearInterval(timerRef.current);
+                      timerRef.current = null;
+                  }
+              };
+          }
+      }, [currentWordIndex, vocabList, timerEnabled, isComplete, isStarted]);
+
+      // 정답 처리 함수
+      const handleAnswer = (selectedOption) => {
+          if (timerEnabled && timerRef.current) {
+              clearInterval(timerRef.current);
+              timerRef.current = null;
+          }
+          const currentWord = vocabList[currentWordIndex];
+          const isTimeout = selectedOption === null;
+          const isCorrect = !isTimeout && (selectedOption === currentWord.english);
+
+          if (isCorrect) {
+              setStreak(prev => prev + 1);
+              setFeedback({ status: 'correct', message: 'Correct!' });
+              // 정답이면 단어 제거
+              const newVocabList = vocabList.filter((_, i) => i !== currentWordIndex);
+              if (newVocabList.length === 0) {
+                  setIsComplete(true);
+                  setCompletionTime(new Date());
+              } else {
+                  setVocabList(newVocabList);
+                  setCurrentWordIndex(currentWordIndex % newVocabList.length);
+              }
+          } else {
+              setStreak(0);
+              const message = isTimeout ? "Time's up! Incorrect." : "Incorrect! Try again.";
+              setFeedback({ status: 'incorrect', message });
+              // 오답 처리: 만약 '틀린 단어 반복' 모드이면 같은 단어를 재출제하도록 함.
+              if (!repeatUntilCorrect) {
+                  const nextIndex = (currentWordIndex + 1) % vocabList.length;
+                  setCurrentWordIndex(nextIndex);
+              } else {
+                  // 같은 단어를 다시 묻기 위해 타이머를 재시작
+                  if (timerEnabled) {
+                      setTimeLeft(10);
+                      if (timerRef.current) clearInterval(timerRef.current);
+                      timerRef.current = setInterval(() => {
+                          setTimeLeft(prev => {
+                              if (prev <= 1) {
+                                  clearInterval(timerRef.current);
+                                  timerRef.current = null;
+                                  handleAnswer(null);
+                                  return 0;
+                              }
+                              return prev - 1;
+                          });
+                      }, 1000);
+                  }
+              }
+          }
+          // 피드백 1초 후 지움
+          setTimeout(() => setFeedback(null), 1000);
+      };
+
+      const handleStart = (e) => {
+          e.preventDefault();
+          if (studentInfo.name.trim()) {
+              setIsStarted(true);
+          }
+      };
+
+      const handleRetry = () => {
+          setIsComplete(false);
+          setCurrentWordIndex(0);
+          setFeedback(null);
+          setTotalProgress(0);
+          setStreak(0);
+          setCompletionTime(null);
+          const selectedWords = shuffleArray([...fullVocabList])
+              .slice(0, 30)
+              .map(word => ({ ...word }));
+          setVocabList(selectedWords);
+      };
+
+      // 시작 화면: 이름 입력 및 옵션 선택 (타이머, 틀린 단어 반복)
+      if (!isStarted) {
+          return (
+              <div className="container">
+                  <h2 className="title">Enter your name to start the quiz</h2>
+                  <form onSubmit={handleStart}>
+                      <input
+                          type="text"
+                          value={studentInfo.name}
+                          onChange={(e) => setStudentInfo({ ...studentInfo, name: e.target.value })}
+                          placeholder="Enter your name"
+                          required
+                      />
+                      <label style={{ marginTop: '10px' }}>
+                          <input
+                              type="checkbox"
+                              checked={timerEnabled}
+                              onChange={(e) => setTimerEnabled(e.target.checked)}
+                              style={{ marginRight: '5px' }}
+                          />
+                          Enable Timer (10 seconds per question)
+                      </label>
+                      <label style={{ marginTop: '10px' }}>
+                          <input
+                              type="checkbox"
+                              checked={repeatUntilCorrect}
+                              onChange={(e) => setRepeatUntilCorrect(e.target.checked)}
+                              style={{ marginRight: '5px' }}
+                          />
+                          Repeat wrong words until answered correctly
+                      </label>
+                      <button type="submit">Start Quiz</button>
+                  </form>
+              </div>
+          );
+      }
+
+      // 완료 화면
+      if (isComplete) {
+          return (
+              <div className="container certificate">
+                  <h1 className="title">Congratulations, {studentInfo.name}!</h1>
+                  <p>You have completed the vocabulary test.</p>
+                  <div className="stats-grid">
+                      <div className="stat-card">
+                          <div>Completion Time</div>
+                          <div>{completionTime ? new Date(completionTime).toLocaleString() : ''}</div>
+                      </div>
+                      <div className="stat-card">
+                          <div>Best Streak</div>
+                          <div>{streak}</div>
+                      </div>
+                      <div className="stat-card">
+                          <div>Success Rate</div>
+                          <div>{Math.round(totalProgress)}%</div>
+                      </div>
+                  </div>
+                  <button className="retry-button" onClick={handleRetry}>
+                      Try Again with New Words!
+                  </button>
+              </div>
+          );
+      }
+
+      return (
+          <div className="container">
+              <div className="header">
+                  <h1 className="title">Vocabulary Test</h1>
+                  <p>Student: {studentInfo.name}</p>
+              </div>
+
+              <div className="progress-container">
+                  <div>Progress: {Math.round(totalProgress)}%</div>
+                  <div className="progress-bar">
+                      <div className="progress-fill" style={{ width: `${totalProgress}%` }} />
+                  </div>
+              </div>
+
+              <StreakDisplay streak={streak} />
+
+              {/* 타이머 표시 */}
+              {timerEnabled && !isComplete && (
+                  <div style={{ textAlign: 'center', marginBottom: '1rem', fontSize: '1.25rem' }}>
+                      Time Left: {timeLeft}s
+                  </div>
+              )}
+
+              <div className="word-container">
+                  <p>
+                      What is the English word for "<strong className="korean-text">
+                          {vocabList && vocabList[currentWordIndex] && vocabList[currentWordIndex].korean}
+                      </strong>"?
+                  </p>
+              </div>
+              <div className="options-grid">
+                  {options.map((option, index) => (
+                      <button
+                          key={index}
+                          onClick={() => handleAnswer(option)}
+                          className="option-button"
+                      >
+                          {option}
+                      </button>
+                  ))}
+              </div>
+
+              {feedback && (
+                  <div className={`feedback ${feedback.status}`}>
+                      {feedback.message}
+                  </div>
+              )}
+          </div>
+      );
+    };
+
+    // 최종 렌더링
+    ReactDOM.render(<VocabTest />, document.getElementById('root'));
+  </script>
+</body>
+</html>
+
